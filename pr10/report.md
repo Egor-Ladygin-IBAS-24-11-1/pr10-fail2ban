@@ -16,18 +16,10 @@ failregex = ^%(__prefix_line)s(?:error: PAM: )?[aA]uthentication (?:failure|fail
 - Забаненный IP: 192.168.76.134
 - Время от начала атаки до бана: ~10–15 секунд
 
-**Скриншот hydra в момент бана:**  
-![hydra ban](screens/03_hydra_stuck.png)
-
-**Скриншот fail2ban-client status sshd с забаненным IP:**  
-![f2b banned](screens/04_f2b_banned.png)
 
 ## 3. Механизм блокировки
 
 fail2ban физически блокирует IP через **iptables** — добавляет правило в цепочку `f2b-sshd`, которое DROP-ает пакеты с забаненного адреса.
-
-**Вывод iptables -L -n:**  
-![iptables](screens/07_iptables_f2b.png)
 
 ## 4. Усиленная защита
 
@@ -40,8 +32,6 @@ fail2ban физически блокирует IP через **iptables** — д
 
 Своё правило (sid 1000001):
 alert tcp any any -> $HOME_NET 22 (msg:"SSH brute-force attempt - multiple SYN"; flow:to_server; flags:S; threshold:type both, track by_src, count 5, seconds 60; sid:1000001; rev:1;)
-**Сработавший алерт из fast.log:**  
-![fast.log](screens/12_suricata_alert.png)
 
 Дополнительные поля в `eve.json` по сравнению с `fast.log`:
 - `timestamp` — точное время события
