@@ -1,0 +1,18 @@
+name: License Check
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+jobs:
+  licensee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: gem install licensee
+      - run: licensee detect .
+  reuse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fsfe/reuse-action@v3
