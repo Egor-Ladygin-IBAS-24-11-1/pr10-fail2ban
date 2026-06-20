@@ -8,13 +8,12 @@
 
 Параметры jail (до усиления): `maxretry=3, findtime=600, bantime=600`
 
-Регулярное выражение фильтра sshd (из `/etc/fail2ban/filter.d/sshd.conf`): failregex = ^%(__prefix_line)s(?:error: PAM: )?[aA]uthentication (?:failure|fail|error).*from <HOST>
-
-
+Регулярное выражение фильтра sshd (из `/etc/fail2ban/filter.d/sshd.conf`):
+failregex = ^%(__prefix_line)s(?:error: PAM: )?[aA]uthentication (?:failure|fail|error).*from <HOST>
 ## 2. Брутфорс через hydra
 
 - Неудачных попыток до бана: **3** (соответствует maxretry)
-- Забаненный IP: *(вставить VM_IP со скриншота)*
+- Забаненный IP: 192.168.76.134
 - Время от начала атаки до бана: ~10–15 секунд
 
 **Скриншот hydra в момент бана:**  
@@ -39,9 +38,8 @@ fail2ban физически блокирует IP через **iptables** — д
 
 ## 5. Suricata
 
-Своё правило (sid 1000001):alert tcp any any -> $HOME_NET 22 (msg:"SSH brute-force attempt - multiple SYN"; flow:to_server; flags:S; threshold:type both, track by_src, count 5, seconds 60; sid:1000001; rev:1;)
-
-
+Своё правило (sid 1000001):
+alert tcp any any -> $HOME_NET 22 (msg:"SSH brute-force attempt - multiple SYN"; flow:to_server; flags:S; threshold:type both, track by_src, count 5, seconds 60; sid:1000001; rev:1;)
 **Сработавший алерт из fast.log:**  
 ![fast.log](screens/12_suricata_alert.png)
 
